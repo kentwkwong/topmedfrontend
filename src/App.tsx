@@ -1,25 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import Navbar from "./components/Navbar";
+import "bootstrap/dist/css/bootstrap.css";
+import ImagePath from "./assets/topmedical-transporation-logo.png";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Leave } from "./pages/Leave";
+import Timesheet from "./pages/Timesheet";
+import { Info } from "./pages/Info";
 function App() {
+  let navItems = ["Info", "Timesheet", "Leave"];
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar
+        brandName="Top Medical"
+        imageSrcPath={ImagePath}
+        navItems={navItems}
+      />
+      <Routes>
+        <Route path="/Info" element={<Info />}></Route>
+        <Route path="/Timesheet" element={<Timesheet />}></Route>
+        <Route path="/Leave" element={<Leave />}></Route>
+      </Routes>
+    </>
   );
 }
 
