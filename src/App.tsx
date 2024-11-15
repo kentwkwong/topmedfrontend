@@ -11,11 +11,11 @@ function App() {
   let navItems = ["Info", "Timesheet", "Leave"];
   return (
     <>
-      {/* <Navbar
+      <Navbar
         brandName="Top Medical"
         imageSrcPath={ImagePath}
         navItems={navItems}
-      /> */}
+      />
       <span>
         <Routes>
           <Route path="/Info" element={<Info />}></Route>

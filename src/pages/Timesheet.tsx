@@ -49,14 +49,13 @@ const Timesheet: React.FC = () => {
     setLoading(true);
     setMessage("");
     setError("");
-
+    console.log(formData);
     try {
       // Send form data to the C# backend
-      //   const response = await axios.post(
-      //     "https://your-api-url.com/api/timesheet",
-      //     formData
-      //   );
-      alert("test here");
+      // const response = await axios.post(
+      //   "https://topmedbackend-gyg4d0f5cffrcaaf.canadacentral-01.azurewebsites.net/api/sendemail",
+      //   formData
+      // );
       setLoading(false);
       setMessage("Timesheet submitted successfully!");
     } catch (err) {
