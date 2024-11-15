@@ -4,12 +4,12 @@ import axios from "axios";
 // Define the types for the form data
 interface TimesheetFormData {
   displayName: string;
-  partnerDisplayName: string;
-  startTime: string;
-  endTime: string;
-  truckNumber: string;
+  partnerName: string;
+  workFrom: string;
+  workTo: string;
+  truckNum: string;
   hasLunch: boolean;
-  numOfBreaks: number;
+  breaksCount: number;
   remarks: string;
 }
 
@@ -17,12 +17,12 @@ const Timesheet: React.FC = () => {
   // Initialize the form data with the appropriate types
   const [formData, setFormData] = useState<TimesheetFormData>({
     displayName: "",
-    partnerDisplayName: "",
-    startTime: "",
-    endTime: "",
-    truckNumber: "",
+    partnerName: "",
+    workFrom: "",
+    workTo: "",
+    truckNum: "",
     hasLunch: false,
-    numOfBreaks: 0,
+    breaksCount: 0,
     remarks: "",
   });
 
@@ -52,10 +52,10 @@ const Timesheet: React.FC = () => {
     console.log(formData);
     try {
       // Send form data to the C# backend
-      // const response = await axios.post(
-      //   "https://topmedbackend-gyg4d0f5cffrcaaf.canadacentral-01.azurewebsites.net/api/sendemail",
-      //   formData
-      // );
+      const response = await axios.post(
+        "https://topmedbackend-gyg4d0f5cffrcaaf.canadacentral-01.azurewebsites.net/api/sendemail",
+        formData
+      );
       setLoading(false);
       setMessage("Timesheet submitted successfully!");
     } catch (err) {
@@ -83,44 +83,44 @@ const Timesheet: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label>Partner Display Name:</label>
+          <label>Partner Name:</label>
           <input
             type="text"
-            name="partnerDisplayName"
-            value={formData.partnerDisplayName}
+            name="partnerName"
+            value={formData.partnerName}
             onChange={handleChange}
             required
           />
         </div>
 
         <div className="form-group">
-          <label>Start Time:</label>
+          <label>Work From:</label>
           <input
             type="datetime-local"
-            name="startTime"
-            value={formData.startTime}
+            name="workFrom"
+            value={formData.workFrom}
             onChange={handleChange}
             required
           />
         </div>
 
         <div className="form-group">
-          <label>End Time:</label>
+          <label>Work To:</label>
           <input
             type="datetime-local"
-            name="endTime"
-            value={formData.endTime}
+            name="workTo"
+            value={formData.workTo}
             onChange={handleChange}
             required
           />
         </div>
 
         <div className="form-group">
-          <label>Truck Number:</label>
+          <label>Truck Num:</label>
           <input
             type="text"
-            name="truckNumber"
-            value={formData.truckNumber}
+            name="truckNum"
+            value={formData.truckNum}
             onChange={handleChange}
             required
           />
@@ -140,8 +140,8 @@ const Timesheet: React.FC = () => {
           <label>Number of Breaks:</label>
           <input
             type="number"
-            name="numOfBreaks"
-            value={formData.numOfBreaks}
+            name="breaksCount"
+            value={formData.breaksCount}
             onChange={handleChange}
             min="0"
             required
