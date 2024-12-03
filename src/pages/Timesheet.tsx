@@ -2,6 +2,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import {
+  Select,
+  MenuItem,
+  InputLabel,
   TextField,
   Button,
   FormControlLabel,
@@ -10,6 +13,8 @@ import {
   Typography,
   Box,
   Paper,
+  SelectChangeEvent,
+  FormControl,
 } from "@mui/material";
 import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -32,8 +37,13 @@ interface TimesheetData {
 }
 
 const TimesheetForm: React.FC = () => {
+  const [message, setMessage] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const names: string[] = ["Kent"];
+
   const [formData, setFormData] = useState<TimesheetData>({
-    displayName: "",
+    displayName: names[0],
     partnerName: "",
     truckNum: "",
     workFrom: "",
@@ -44,10 +54,6 @@ const TimesheetForm: React.FC = () => {
     dtp: "",
   });
 
-  const [message, setMessage] = useState<string>("");
-  const [error, setError] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-
   // Handle form field changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -57,13 +63,24 @@ const TimesheetForm: React.FC = () => {
     });
   };
 
-  const handleDateTimeChange = (newValue: Dayjs | null) => {
+  const handleWorkFromChange = (newValue: Dayjs | null) => {
     setFormData({
       ...formData,
-      dtp: newValue ? newValue.format("YYYY-MM-DDTHH:mm") : "",
+      workFrom: newValue ? newValue.format("YYYY-MM-DDTHH:mm") : "",
     });
   };
-
+  const handleWorkToChange = (newValue: Dayjs | null) => {
+    setFormData({
+      ...formData,
+      workTo: newValue ? newValue.format("YYYY-MM-DDTHH:mm") : "",
+    });
+  };
+  const handleNameChange = (e: SelectChangeEvent<string>) => {
+    setFormData({
+      ...formData,
+      displayName: e.target.value,
+    });
+  };
   // Handle submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,11 +90,11 @@ const TimesheetForm: React.FC = () => {
     console.log(formData);
     try {
       // Send form data to the C# backend
-      // const response = await axios.post(
-      //   // "https://topmedbackend-gyg4d0f5cffrcaaf.canadacentral-01.azurewebsites.net/api/sendemail",
-      //   "https://topmedpythonapi.vercel.app/sendtimesheetemail",
-      //   formData
-      // );
+      const response = await axios.post(
+        // "https://topmedbackend-gyg4d0f5cffrcaaf.canadacentral-01.azurewebsites.net/api/sendemail",
+        "https://topmedpythonapi.vercel.app/sendtimesheetemail",
+        formData
+      );
       setLoading(false);
       setMessage("Timesheet submitted successfully!");
     } catch (err) {
@@ -95,7 +112,7 @@ const TimesheetForm: React.FC = () => {
           </Typography>
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
                   label="Name"
@@ -106,6 +123,23 @@ const TimesheetForm: React.FC = () => {
                   required
                   className="form-field"
                 />
+              </Grid> */}
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel id="dropdown-label">Select a Name</InputLabel>
+                  <Select
+                    value={formData.displayName}
+                    name="Name"
+                    onChange={handleNameChange}
+                    fullWidth
+                  >
+                    {names.map((name) => (
+                      <MenuItem key={name} value={name}>
+                        {name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -120,7 +154,7 @@ const TimesheetForm: React.FC = () => {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
                   label="Work From"
@@ -151,6 +185,38 @@ const TimesheetForm: React.FC = () => {
                   required
                   className="form-field"
                 />
+              </Grid> */}
+              <Grid item xs={12} sm={6}>
+                <MobileDateTimePicker
+                  name="workFrom"
+                  value={formData.workFrom ? dayjs(formData.workFrom) : null}
+                  ampm={false}
+                  onChange={handleWorkFromChange}
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      required: true,
+                      label: "Work From",
+                      className: "form-field",
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <MobileDateTimePicker
+                  name="workTo"
+                  value={formData.workTo ? dayjs(formData.workTo) : null}
+                  ampm={false}
+                  onChange={handleWorkToChange}
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      required: true,
+                      label: "Work To",
+                      className: "form-field",
+                    },
+                  }}
+                />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -162,23 +228,6 @@ const TimesheetForm: React.FC = () => {
                   onChange={handleChange}
                   required
                   className="form-field"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <MobileDateTimePicker
-                  label="DTP"
-                  name="dtp"
-                  value={formData.dtp ? dayjs(formData.dtp) : null}
-                  ampm={false}
-                  onChange={handleDateTimeChange}
-                  slotProps={{
-                    textField: {
-                      fullWidth: true,
-                      required: true,
-                      helperText: "Select date and time",
-                      className: "form-field",
-                    },
-                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
