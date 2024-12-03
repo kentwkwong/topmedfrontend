@@ -14,7 +14,7 @@ import {
 import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import "./Timesheet.css"; // Import the external CSS file
 import { assert } from "console";
 
@@ -28,6 +28,7 @@ interface TimesheetData {
   breaksCount: number;
   hasLunch: boolean;
   remarks: string;
+  dtp: string;
 }
 
 const TimesheetForm: React.FC = () => {
@@ -40,18 +41,26 @@ const TimesheetForm: React.FC = () => {
     breaksCount: 0,
     hasLunch: false,
     remarks: "",
+    dtp: "",
   });
 
   const [message, setMessage] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [value, setValue] = useState(dayjs());
+
   // Handle form field changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
       [name]: type === "checkbox" ? checked : value,
+    });
+  };
+
+  const handleDateTimeChange = (newValue: Dayjs | null) => {
+    setFormData({
+      ...formData,
+      dtp: newValue ? newValue.format("YYYY-MM-DDTHH:mm") : "",
     });
   };
 
@@ -157,7 +166,19 @@ const TimesheetForm: React.FC = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <MobileDateTimePicker
-                  defaultValue={dayjs("2022-04-17T15:30")}
+                  label="DTP"
+                  name="dtp"
+                  value={formData.dtp ? dayjs(formData.dtp) : null}
+                  ampm={false}
+                  onChange={handleDateTimeChange}
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      required: true,
+                      helperText: "Select date and time",
+                      className: "form-field",
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
