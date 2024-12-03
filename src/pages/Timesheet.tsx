@@ -110,6 +110,8 @@ const TimesheetForm: React.FC = () => {
           <Typography className="timesheet-title" variant="h5" gutterBottom>
             Timesheet Submission
           </Typography>
+          {message && <div className="success-message">{message}</div>}
+          {error && <div className="error-message">{error}</div>}
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               {/* <Grid item xs={12} sm={6}>
@@ -126,12 +128,13 @@ const TimesheetForm: React.FC = () => {
               </Grid> */}
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
-                  <InputLabel id="dropdown-label">Select a Name</InputLabel>
+                  <InputLabel id="dropdown-label">Your name:</InputLabel>
                   <Select
                     value={formData.displayName}
                     name="Name"
                     onChange={handleNameChange}
                     fullWidth
+                    required
                   >
                     {names.map((name) => (
                       <MenuItem key={name} value={name}>
