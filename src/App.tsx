@@ -6,7 +6,7 @@ import ImagePath from "./assets/topmedical-transporation-logo.png";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Leave } from "./pages/Leave";
 import Timesheet from "./pages/Timesheet";
-import Timesheetsample from "./pages/Timesheetsample";
+import TopMedTimesheet from "./pages/TopMedTimesheet";
 import Info from "./pages/Info";
 import { Teeth } from "./pages/Teeth";
 import Registration from "./pages/Registration";
@@ -22,10 +22,10 @@ function App() {
       />
       <span>
         <Routes>
-          <Route path="/Registration" element={<Registration />}></Route>
+          <Route path="/" element={<Registration />}></Route>
           <Route path="/Info" element={<Info />}></Route>
           <Route path="/Timesheet" element={<Timesheet />}></Route>
-          <Route path="/Timesheetsample" element={<Timesheetsample />}></Route>
+          <Route path="/TopMedTimesheet" element={<TopMedTimesheet />}></Route>
           <Route path="/Leave" element={<Leave />}></Route>
           <Route path="/Teeth" element={<Teeth />}></Route>
         </Routes>
