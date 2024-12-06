@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
 interface NavbarProps {
   brandName: string;
   imageSrcPath: string;
@@ -10,7 +12,16 @@ function Navbar({ brandName, imageSrcPath, navItems }: NavbarProps) {
   return (
     <nav className="navbar navbar-expand navbar-light bg-white shadow">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">
+        <Link to="/">
+          <img
+            src={imageSrcPath}
+            alt="Logo"
+            width="200"
+            height="60"
+            className="d-inline-block align-text-top"
+          />
+        </Link>
+        {/* <a className="navbar-brand" href="#">
           <img
             src={imageSrcPath}
             alt="Logo"
@@ -19,7 +30,7 @@ function Navbar({ brandName, imageSrcPath, navItems }: NavbarProps) {
             className="d-inline-block align-text-top"
           />
           <span className="fw-bolder fs-4">{brandName}</span>
-        </a>
+        </a> */}
 
         <div className="d-flex" id="navbarNavDropdown">
           <ul className="navbar-nav me-auto mb-2 mb-md-1">
