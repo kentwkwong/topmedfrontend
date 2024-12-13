@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Container,
+  FormLabel,
   Paper,
   TextField,
   Typography,
@@ -26,7 +27,6 @@ const Login = () => {
       return;
     }
     setLoading(true);
-
     setError(null);
 
     try {
@@ -51,6 +51,8 @@ const Login = () => {
   return (
     <Container maxWidth="xs">
       <Paper elevation={10} sx={{ marginTop: 8, padding: 2 }}>
+        <FormLabel>{process.env.REACT_APP_API_URL}</FormLabel>
+
         <Typography
           className="timesheet-title"
           variant="h5"
