@@ -15,13 +15,15 @@ import {
   Paper,
   SelectChangeEvent,
   FormControl,
+  colors,
+  FormLabel,
 } from "@mui/material";
 import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs, { Dayjs } from "dayjs";
 import "./Timesheet.css"; // Import the external CSS file
-import { assert } from "console";
+import { useUser } from "../components/UserContext";
 
 // TypeScript interface for form data
 interface TimesheetData {
@@ -33,17 +35,18 @@ interface TimesheetData {
   breaksCount: number;
   hasLunch: boolean;
   remarks: string;
-  dtp: string;
 }
 
 const TimesheetForm: React.FC = () => {
   const [message, setMessage] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const names: string[] = ["Kent"];
+  const { user } = useUser();
+
+  const backendApi = process.env.REACT_APP_API_URL + "/sendtimesheetemail";
 
   const [formData, setFormData] = useState<TimesheetData>({
-    displayName: names[0],
+    displayName: user ? user.username : "",
     partnerName: "",
     truckNum: "",
     workFrom: "",
@@ -51,7 +54,6 @@ const TimesheetForm: React.FC = () => {
     breaksCount: 0,
     hasLunch: false,
     remarks: "",
-    dtp: "",
   });
 
   // Handle form field changes
@@ -75,12 +77,12 @@ const TimesheetForm: React.FC = () => {
       workTo: newValue ? newValue.format("YYYY-MM-DDTHH:mm") : "",
     });
   };
-  const handleNameChange = (e: SelectChangeEvent<string>) => {
-    setFormData({
-      ...formData,
-      displayName: e.target.value,
-    });
-  };
+  // const handleNameChange = (e: SelectChangeEvent<string>) => {
+  //   setFormData({
+  //     ...formData,
+  //     displayName: e.target.value,
+  //   });
+  // };
   // Handle submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,7 +94,7 @@ const TimesheetForm: React.FC = () => {
       // Send form data to the C# backend
       const response = await axios.post(
         // "https://topmedbackend-gyg4d0f5cffrcaaf.canadacentral-01.azurewebsites.net/api/sendemail",
-        "https://topmedpythonapi.vercel.app/sendtimesheetemail",
+        backendApi,
         formData
       );
       setLoading(false);
@@ -105,9 +107,28 @@ const TimesheetForm: React.FC = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <img
+        width="24"
+        height="24"
+        src="https://img.icons8.com/?size=100&id=19Qs7U6PcAie&format=png&color=000000"
+      />
+      <FormLabel>Send to your email only</FormLabel>
+      <br />
+      <img
+        width="24"
+        height="24"
+        src="https://img.icons8.com/?size=100&id=7Tnx21L5k1yA&format=png&color=000000"
+      />
+      <FormLabel>Not sending to HOURS!!</FormLabel>
+
       <Box className="timesheet-container">
         <Paper className="timesheet-paper">
-          <Typography className="timesheet-title" variant="h5" gutterBottom>
+          <Typography
+            className="timesheet-title"
+            variant="h5"
+            gutterBottom
+            color="common.white"
+          >
             Timesheet Submission
           </Typography>
           {message && <div className="success-message">{message}</div>}
@@ -127,8 +148,12 @@ const TimesheetForm: React.FC = () => {
                 />
               </Grid> */}
               <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
-                  <InputLabel id="dropdown-label">Your name:</InputLabel>
+                {/* <TextField
+                    value={formData.displayName}
+                    fullWidth
+                    slotProps={{ input: { readOnly: true } }}
+                    label="Name"
+                  /> 
                   <Select
                     value={formData.displayName}
                     name="Name"
@@ -141,16 +166,25 @@ const TimesheetForm: React.FC = () => {
                         {name}
                       </MenuItem>
                     ))}
-                  </Select>
-                </FormControl>
+                  </Select> */}
+                <TextField
+                  fullWidth
+                  name="partnerName"
+                  label="Partner Name"
+                  variant="outlined"
+                  value={formData.partnerName}
+                  onChange={handleChange}
+                  required
+                  className="form-field"
+                />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  label="Partner Name"
+                  label="Truck Number"
                   variant="outlined"
-                  name="partnerName"
-                  value={formData.partnerName}
+                  name="truckNum"
+                  value={formData.truckNum}
                   onChange={handleChange}
                   required
                   className="form-field"
@@ -224,18 +258,6 @@ const TimesheetForm: React.FC = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  label="Truck Number"
-                  variant="outlined"
-                  name="truckNum"
-                  value={formData.truckNum}
-                  onChange={handleChange}
-                  required
-                  className="form-field"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
                   label="Number of Breaks"
                   variant="outlined"
                   name="breaksCount"
@@ -246,7 +268,7 @@ const TimesheetForm: React.FC = () => {
                   className="form-field"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <FormControlLabel
                   control={
                     <Checkbox

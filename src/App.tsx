@@ -14,6 +14,8 @@ import { Teeth } from "./pages/Teeth";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import { CssBaseline } from "@mui/material";
+import { UserProvider } from "./components/UserContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const theme = createTheme({
   palette: {
@@ -26,25 +28,35 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Navbar
-          brandName="Top Medical"
-          imageSrcPath={ImagePath}
-          navItems={navItems}
-        />
-        <span>
-          <Routes>
-            <Route path="/" element={<Login />}></Route>
-            <Route path="/Info" element={<Info />}></Route>
-            <Route path="/Timesheet" element={<Timesheet />}></Route>
-            <Route
-              path="/TopMedTimesheet"
-              element={<TopMedTimesheet />}
-            ></Route>
-            <Route path="/Leave" element={<Leave />}></Route>
-            <Route path="/Teeth" element={<Teeth />}></Route>
-          </Routes>
-        </span>
+        <UserProvider>
+          <CssBaseline />
+          <Navbar
+            brandName="Top Medical"
+            imageSrcPath={ImagePath}
+            navItems={navItems}
+          />
+          <span>
+            <Routes>
+              <Route path="/" element={<Login />}></Route>
+              <Route path="/Info" element={<Info />}></Route>
+              <Route
+                path="/Timesheet"
+                element={
+                  <ProtectedRoute>
+                    <Timesheet />
+                  </ProtectedRoute>
+                }
+              ></Route>
+              <Route path="/Registration" element={<Registration />}></Route>
+              <Route
+                path="/TopMedTimesheet"
+                element={<TopMedTimesheet />}
+              ></Route>
+              <Route path="/Leave" element={<Leave />}></Route>
+              <Route path="/Teeth" element={<Teeth />}></Route>
+            </Routes>
+          </span>
+        </UserProvider>
       </ThemeProvider>
     </>
   );
