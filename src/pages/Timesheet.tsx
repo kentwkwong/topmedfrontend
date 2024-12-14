@@ -2,9 +2,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import {
-  Select,
-  MenuItem,
-  InputLabel,
   TextField,
   Button,
   FormControlLabel,
@@ -13,9 +10,6 @@ import {
   Typography,
   Box,
   Paper,
-  SelectChangeEvent,
-  FormControl,
-  colors,
   FormLabel,
 } from "@mui/material";
 import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
@@ -27,13 +21,13 @@ import { useUser } from "../components/UserContext";
 
 // TypeScript interface for form data
 interface TimesheetData {
-  displayName: string;
-  partnerName: string;
-  truckNum: string;
-  workFrom: string;
-  workTo: string;
-  breaksCount: number;
-  hasLunch: boolean;
+  name: string;
+  partner: string;
+  truck: string;
+  from: string;
+  to: string;
+  break: number;
+  lunch: boolean;
   remarks: string;
 }
 
@@ -43,16 +37,14 @@ const TimesheetForm: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { user } = useUser();
 
-  const backendApi = process.env.REACT_APP_API_URL + "/sendtimesheetemail";
-
   const [formData, setFormData] = useState<TimesheetData>({
-    displayName: user ? user.username : "",
-    partnerName: "",
-    truckNum: "",
-    workFrom: "",
-    workTo: "",
-    breaksCount: 0,
-    hasLunch: false,
+    name: user ? user.name : "",
+    partner: "",
+    truck: "",
+    from: "",
+    to: "",
+    break: 0,
+    lunch: false,
     remarks: "",
   });
 
@@ -68,13 +60,13 @@ const TimesheetForm: React.FC = () => {
   const handleWorkFromChange = (newValue: Dayjs | null) => {
     setFormData({
       ...formData,
-      workFrom: newValue ? newValue.format("YYYY-MM-DDTHH:mm") : "",
+      from: newValue ? newValue.format("YYYY-MM-DDTHH:mm") : "",
     });
   };
   const handleWorkToChange = (newValue: Dayjs | null) => {
     setFormData({
       ...formData,
-      workTo: newValue ? newValue.format("YYYY-MM-DDTHH:mm") : "",
+      to: newValue ? newValue.format("YYYY-MM-DDTHH:mm") : "",
     });
   };
   // const handleNameChange = (e: SelectChangeEvent<string>) => {
@@ -94,33 +86,39 @@ const TimesheetForm: React.FC = () => {
       // Send form data to the C# backend
       const response = await axios.post(
         // "https://topmedbackend-gyg4d0f5cffrcaaf.canadacentral-01.azurewebsites.net/api/sendemail",
-        backendApi,
+        process.env.REACT_APP_API_URL + "/sendtimesheetemail",
         formData
       );
+      if (!response.data.result) {
+        console.log(response.data);
+        setError(response.data.error);
+      } else {
+        setMessage(response.data.result);
+      }
+    } catch (err: any) {
+      setError(err.message || "An unknown error occurred.");
+    } finally {
       setLoading(false);
-      setMessage("Timesheet submitted successfully!");
-    } catch (err) {
-      setLoading(false);
-      setError("Failed to submit timesheet. Please try again.");
     }
   };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <img
-        width="24"
-        height="24"
-        src="https://img.icons8.com/?size=100&id=19Qs7U6PcAie&format=png&color=000000"
-      />
-      <FormLabel>Send to your email only</FormLabel>
-      <br />
-      <img
-        width="24"
-        height="24"
-        src="https://img.icons8.com/?size=100&id=7Tnx21L5k1yA&format=png&color=000000"
-      />
-      <FormLabel>Not sending to HOURS (Tony)!</FormLabel>
-
+      <center>
+        <img
+          width="24"
+          height="24"
+          src="https://img.icons8.com/?size=100&id=19Qs7U6PcAie&format=png&color=000000"
+        />
+        <FormLabel>Send to your email only</FormLabel>
+        <br />
+        <img
+          width="24"
+          height="24"
+          src="https://img.icons8.com/?size=100&id=7Tnx21L5k1yA&format=png&color=000000"
+        />
+        <FormLabel>Not sending to HOURS (Tony)!</FormLabel>
+      </center>
       <Box className="timesheet-container">
         <Paper className="timesheet-paper">
           <Typography
@@ -131,8 +129,12 @@ const TimesheetForm: React.FC = () => {
           >
             Timesheet Submission
           </Typography>
-          {message && <div className="success-message">{message}</div>}
-          {error && <div className="error-message">{error}</div>}
+          {message && (
+            <div className="alert alert-success" role="alert">
+              {message}
+            </div>
+          )}
+          {error && <div className="alert alert-danger">{error}</div>}
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               {/* <Grid item xs={12} sm={6}>
@@ -169,10 +171,10 @@ const TimesheetForm: React.FC = () => {
                   </Select> */}
                 <TextField
                   fullWidth
-                  name="partnerName"
+                  name="partner"
                   label="Partner Name"
                   variant="outlined"
-                  value={formData.partnerName}
+                  value={formData.partner}
                   onChange={handleChange}
                   required
                   className="form-field"
@@ -183,8 +185,8 @@ const TimesheetForm: React.FC = () => {
                   fullWidth
                   label="Truck Number"
                   variant="outlined"
-                  name="truckNum"
-                  value={formData.truckNum}
+                  name="truck"
+                  value={formData.truck}
                   onChange={handleChange}
                   required
                   className="form-field"
@@ -225,8 +227,8 @@ const TimesheetForm: React.FC = () => {
               </Grid> */}
               <Grid item xs={12} sm={6}>
                 <MobileDateTimePicker
-                  name="workFrom"
-                  value={formData.workFrom ? dayjs(formData.workFrom) : null}
+                  name="from"
+                  value={formData.from ? dayjs(formData.from) : null}
                   ampm={false}
                   onChange={handleWorkFromChange}
                   slotProps={{
@@ -241,8 +243,8 @@ const TimesheetForm: React.FC = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <MobileDateTimePicker
-                  name="workTo"
-                  value={formData.workTo ? dayjs(formData.workTo) : null}
+                  name="to"
+                  value={formData.to ? dayjs(formData.to) : null}
                   ampm={false}
                   onChange={handleWorkToChange}
                   slotProps={{
@@ -260,9 +262,9 @@ const TimesheetForm: React.FC = () => {
                   fullWidth
                   label="Number of Breaks"
                   variant="outlined"
-                  name="breaksCount"
+                  name="break"
                   type="number"
-                  value={formData.breaksCount}
+                  value={formData.break}
                   onChange={handleChange}
                   required
                   className="form-field"
@@ -272,9 +274,9 @@ const TimesheetForm: React.FC = () => {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={formData.hasLunch}
+                      checked={formData.lunch}
                       onChange={handleChange}
-                      name="hasLunch"
+                      name="lunch"
                       color="primary"
                     />
                   }

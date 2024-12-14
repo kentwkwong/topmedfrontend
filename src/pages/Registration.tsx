@@ -25,27 +25,26 @@ const Registration: React.FC = () => {
   const [message, setMessage] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const backendApi = process.env.REACT_APP_API_URL + "/register";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       console.log(formData);
-      // fetch(registerApi, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(formData),
-      // })
-      //   .then((response) => response.json())
-      //   .then((data) => console.log(data))
-      //   .catch((error) => console.error("Error:", error));
-
-      const response = await axios.post(backendApi, formData);
-    } catch (error) {
-      console.error(error);
-      alert("Registration failed");
+      setLoading(true);
+      const response = await axios.post(
+        process.env.REACT_APP_API_URL + "/register",
+        formData
+      );
+      if (!response.data.result) {
+        console.log(response.data);
+        setError(response.data.error);
+      } else {
+        setMessage(response.data.result);
+      }
+    } catch (err: any) {
+      setError(err.message || "An unknown error occurred.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -60,6 +59,12 @@ const Registration: React.FC = () => {
         >
           Registration
         </Typography>
+        {message && (
+          <div className="alert alert-success" role="alert">
+            {message}
+          </div>
+        )}
+        {error && <div className="alert alert-danger">{error}</div>}
         <Box sx={{ marginBottom: 2 }}>
           <TextField
             fullWidth
@@ -105,7 +110,7 @@ const Registration: React.FC = () => {
             onClick={handleSubmit}
             disabled={loading}
           >
-            Submit
+            {loading ? "Registering..." : "Register"}
           </Button>
         </Box>
       </Paper>

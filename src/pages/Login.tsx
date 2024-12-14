@@ -18,7 +18,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const backendApi = process.env.REACT_APP_API_URL + "/login";
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -30,16 +29,18 @@ const Login = () => {
     setError(null);
 
     try {
-      const response = await axios.post(backendApi, {
-        email,
-        password,
-      });
-      if (!response.data) {
-        console.log(response.data);
-        setError("Invalid password!");
+      const response = await axios.post(
+        process.env.REACT_APP_API_URL + "/login",
+        {
+          email,
+          password,
+        }
+      );
+      if (!response.data.result) {
+        setError(response.data.error);
       } else {
-        setUser({ username: response.data.username, email: email });
-        navigate("/Timesheet");
+        setUser({ name: response.data.result, email: email });
+        navigate("/Info");
       }
     } catch (err: any) {
       setError(err.message || "An unknown error occurred.");
@@ -51,8 +52,6 @@ const Login = () => {
   return (
     <Container maxWidth="xs">
       <Paper elevation={10} sx={{ marginTop: 8, padding: 2 }}>
-        <FormLabel>{process.env.REACT_APP_API_URL}</FormLabel>
-
         <Typography
           className="timesheet-title"
           variant="h5"

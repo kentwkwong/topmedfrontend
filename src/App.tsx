@@ -8,8 +8,10 @@ import ImagePath from "./assets/topmedical_logo_banner.png";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Leave } from "./pages/Leave";
 import Timesheet from "./pages/Timesheet";
+import History from "./pages/History";
 import TopMedTimesheet from "./pages/TopMedTimesheet";
 import Info from "./pages/Info";
+import Root from "./pages/Root";
 import { Teeth } from "./pages/Teeth";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
@@ -37,13 +39,29 @@ function App() {
           />
           <span>
             <Routes>
-              <Route path="/" element={<Login />}></Route>
-              <Route path="/Info" element={<Info />}></Route>
+              <Route path="/" element={<Root />}></Route>
+              <Route path="/Login" element={<Login />}></Route>
+              <Route
+                path="/Info"
+                element={
+                  <ProtectedRoute>
+                    <Info />
+                  </ProtectedRoute>
+                }
+              ></Route>
               <Route
                 path="/Timesheet"
                 element={
                   <ProtectedRoute>
                     <Timesheet />
+                  </ProtectedRoute>
+                }
+              ></Route>
+              <Route
+                path="/History"
+                element={
+                  <ProtectedRoute>
+                    <History />
                   </ProtectedRoute>
                 }
               ></Route>

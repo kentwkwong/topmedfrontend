@@ -8,7 +8,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   const { user } = useUser();
 
   // Redirect to login if username is empty
-  if (!user?.username) {
+  if (!user?.name) {
     return <Navigate to="/" replace />;
   }
 
