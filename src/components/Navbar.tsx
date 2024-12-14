@@ -34,22 +34,20 @@ function Navbar({ brandName, imageSrcPath, navItems }: NavbarProps) {
           <img
             src={imageSrcPath}
             alt="Logo"
-            width="200"
-            height="60"
+            width="40"
+            height="40"
             className="d-inline-block align-text-top"
           />
+          <img
+            src="https://img.icons8.com/pulsar-line/48/beta-button.png"
+            alt="beta-button"
+          />
         </Link>
-        <img
-          width="60"
-          height="60"
-          src="https://img.icons8.com/pulsar-line/48/beta-button.png"
-          alt="beta-button"
-        />
 
         {user ? (
           <Toolbar>
             <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <Typography variant="h6" color="green" align="center">
+              <Typography variant="body2" color="green" align="center">
                 Welcome, {user.name}!
               </Typography>
             </Box>
