@@ -20,7 +20,8 @@ interface HistoryData {
   to: string;
   truck: string;
   lunch: boolean;
-  break: string;
+  hours: number;
+  minutes: number;
 }
 
 const History: React.FC = () => {
@@ -81,7 +82,7 @@ const History: React.FC = () => {
               <TableCell>To</TableCell>
               <TableCell>Truck Num</TableCell>
               <TableCell>Lunch?</TableCell>
-              <TableCell>Break?</TableCell>
+              <TableCell>Payable Hours</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -93,7 +94,9 @@ const History: React.FC = () => {
                 <TableCell>{item.to}</TableCell>
                 <TableCell>{item.truck}</TableCell>
                 <TableCell>{item.lunch ? "Y" : "N"}</TableCell>
-                <TableCell>{item.break}</TableCell>
+                <TableCell>
+                  {item.minutes}H {item.minutes}M
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
