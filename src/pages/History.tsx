@@ -95,7 +95,7 @@ const History: React.FC = () => {
                 <TableCell>{item.truck}</TableCell>
                 <TableCell>{item.lunch ? "Y" : "N"}</TableCell>
                 <TableCell>
-                  {item.minutes}H {item.minutes}M
+                  {item.hours}H {item.minutes}M
                 </TableCell>
               </TableRow>
             ))}
