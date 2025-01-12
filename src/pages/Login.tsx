@@ -58,7 +58,7 @@ const Login = () => {
           gutterBottom
           color="common.white"
         >
-          Login
+          Timesheet Login
         </Typography>
         {error && <div className="alert alert-danger">{error}</div>}
         <Box sx={{ marginBottom: 2 }}>
@@ -104,6 +104,19 @@ const Login = () => {
               Register
             </button>
           </Link>
+        </Box>
+        <Box sx={{ marginBottom: 2 }}>
+          Demo: How to use timesheet app
+          <iframe
+            width="360"
+            height="240"
+            src="https://www.youtube.com/embed/_sbQc5j2fPc?si=whCSdbfbcxK7tqbt"
+            title="How to use Top Medical Timesheet app"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
         </Box>
       </Paper>
     </Container>

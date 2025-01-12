@@ -118,6 +118,15 @@ const TimesheetForm: React.FC = () => {
           src="https://img.icons8.com/?size=100&id=7Tnx21L5k1yA&format=png&color=000000"
         />
         <FormLabel>Not sending to HOURS (Tony)!</FormLabel>
+        <img
+          width="24"
+          height="24"
+          src="https://img.icons8.com/?size=100&id=63308&format=png&color=000000"
+        />
+        <FormLabel>
+          It will go live (not beta version, directly send to HOURS) in February
+          1st
+        </FormLabel>
       </center>
       <Box className="timesheet-container">
         <Paper className="timesheet-paper">
