@@ -118,6 +118,7 @@ const TimesheetForm: React.FC = () => {
           src="https://img.icons8.com/?size=100&id=7Tnx21L5k1yA&format=png&color=000000"
         />
         <FormLabel>Not sending to HOURS (Tony)!</FormLabel>
+        <br />
         <img
           width="24"
           height="24"
