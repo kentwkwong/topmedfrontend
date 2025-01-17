@@ -18,6 +18,7 @@ import Login from "./pages/Login";
 import { CssBaseline } from "@mui/material";
 import { UserProvider } from "./components/UserContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Weeklyhours from "./pages/Weeklyhours";
 
 const theme = createTheme({
   palette: {
@@ -62,6 +63,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <History />
+                  </ProtectedRoute>
+                }
+              ></Route>
+              <Route
+                path="/Weekly"
+                element={
+                  <ProtectedRoute>
+                    <Weeklyhours />
                   </ProtectedRoute>
                 }
               ></Route>

@@ -18,6 +18,11 @@ const Info: React.FC = () => {
   const handlehistory = () => {
     navigate("/History");
   };
+
+  const handleweekly = () => {
+    navigate("/Weekly");
+  };
+
   return (
     <Container maxWidth="xs">
       <Paper elevation={10} sx={{ marginTop: 8, padding: 2 }}>
@@ -47,6 +52,16 @@ const Info: React.FC = () => {
             onClick={handlehistory}
           >
             Check submitted history
+          </Button>
+        </Box>
+        <Box sx={{ marginBottom: 2 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={handleweekly}
+          >
+            Weekly Summary
           </Button>
         </Box>
       </Paper>

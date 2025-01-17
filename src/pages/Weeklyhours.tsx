@@ -14,17 +14,13 @@ import {
 import { useUser } from "../components/UserContext";
 
 // Define the type for the data you're expecting to fetch
-interface HistoryData {
-  partner: string;
-  from: string;
-  to: string;
-  truck: string;
-  lunch: boolean;
+interface WeeklyData {
+  week: string;
   hours: number;
 }
 
-const History: React.FC = () => {
-  const [historyData, setHistoryData] = useState<HistoryData[]>([]); // State to store fetched data
+const Weeklyhours: React.FC = () => {
+  const [weeklyData, setWeeklyData] = useState<WeeklyData[]>([]); // State to store fetched data
   const [loading, setLoading] = useState<boolean>(true); // State to manage loading state
   const [error, setError] = useState<string | null>(null); // State to manage error
   const { user } = useUser();
@@ -32,9 +28,11 @@ const History: React.FC = () => {
   useEffect(() => {
     const name = user ? user.name : "";
     axios
-      .get(process.env.REACT_APP_API_URL + "/gettimesheetbyname?name=" + name)
+      .get(
+        process.env.REACT_APP_API_URL + "/getweeklytimesheetbyname?name=" + name
+      )
       .then((response) => {
-        setHistoryData(response.data);
+        setWeeklyData(response.data);
         setLoading(false);
       })
       .catch((err: any) => {
@@ -70,29 +68,21 @@ const History: React.FC = () => {
         gutterBottom
         color="common.white"
       >
-        Timesheet History
+        Timesheet Weekly Summary
       </Typography>
       <TableContainer component={Paper} sx={{ marginTop: "20px" }}>
-        <Table sx={{ minWidth: 650 }} aria-label="Submission history">
+        <Table sx={{ minWidth: 650 }} aria-label="Weekly summary">
           <TableHead>
             <TableRow>
-              <TableCell>Partner</TableCell>
-              <TableCell>From</TableCell>
-              <TableCell>To</TableCell>
-              <TableCell>Truck Num</TableCell>
-              <TableCell>Lunch?</TableCell>
-              <TableCell>Payable Hours</TableCell>
+              <TableCell>Period</TableCell>
+              <TableCell>Hours</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {historyData.map((item) => (
+            {weeklyData.map((item) => (
               // <TableRow key={item.id}>
               <TableRow>
-                <TableCell>{item.partner}</TableCell>
-                <TableCell>{item.from}</TableCell>
-                <TableCell>{item.to}</TableCell>
-                <TableCell>{item.truck}</TableCell>
-                <TableCell>{item.lunch ? "Y" : "N"}</TableCell>
+                <TableCell>{item.week}</TableCell>
                 <TableCell>{item.hours}</TableCell>
               </TableRow>
             ))}
@@ -103,4 +93,4 @@ const History: React.FC = () => {
   );
 };
 
-export default History;
+export default Weeklyhours;
