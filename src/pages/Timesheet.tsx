@@ -108,25 +108,10 @@ const TimesheetForm: React.FC = () => {
         <img
           width="24"
           height="24"
-          src="https://img.icons8.com/?size=100&id=19Qs7U6PcAie&format=png&color=000000"
-        />
-        <FormLabel>Send to your email only</FormLabel>
-        <br />
-        <img
-          width="24"
-          height="24"
-          src="https://img.icons8.com/?size=100&id=7Tnx21L5k1yA&format=png&color=000000"
-        />
-        <FormLabel>Not sending to HOURS (Tony)!</FormLabel>
-        <br />
-        <img
-          width="24"
-          height="24"
           src="https://img.icons8.com/?size=100&id=63308&format=png&color=000000"
         />
         <FormLabel>
-          It will go live (not beta version, directly send to HOURS) in February
-          1st
+          When timesheet submitted, directly go to HOURS now
         </FormLabel>
       </center>
       <Box className="timesheet-container">

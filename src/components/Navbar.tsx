@@ -38,10 +38,6 @@ function Navbar({ brandName, imageSrcPath, navItems }: NavbarProps) {
             height="40"
             className="d-inline-block align-text-top"
           />
-          <img
-            src="https://img.icons8.com/pulsar-line/48/beta-button.png"
-            alt="beta-button"
-          />
         </Link>
 
         {user ? (
