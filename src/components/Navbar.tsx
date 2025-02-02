@@ -34,8 +34,8 @@ function Navbar({ brandName, imageSrcPath, navItems }: NavbarProps) {
           <img
             src={imageSrcPath}
             alt="Logo"
-            width="40"
-            height="40"
+            width="220"
+            height="60"
             className="d-inline-block align-text-top"
           />
         </Link>

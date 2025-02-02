@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 // import ImagePath from "./assets/topmedical-transporation-logo.png";
-import ImagePath from "./assets/topmedical_logo_banner.png";
+import ImagePath from "./assets/topmedical_logo_with_banner.png";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Leave } from "./pages/Leave";
 import Timesheet from "./pages/Timesheet";
